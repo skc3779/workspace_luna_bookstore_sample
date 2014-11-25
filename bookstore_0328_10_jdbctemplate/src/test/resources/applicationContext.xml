@@ -12,7 +12,7 @@
 
 	<context:property-placeholder location="spring.properties" />
 	
-	<!-- <context:component-scan base-package="com.bookstore.configuration"/> -->
+	<context:component-scan base-package="com.bookstore.configuration"/>
 	<context:component-scan base-package="com.bookstore.dao" />
 	<context:component-scan base-package="com.bookstore.service" />
 

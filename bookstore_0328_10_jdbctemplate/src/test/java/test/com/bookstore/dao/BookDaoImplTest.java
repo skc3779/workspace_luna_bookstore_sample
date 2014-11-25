@@ -27,8 +27,8 @@ import com.bookstore.entity.UserLevel;
 //@TransactionConfiguration(defaultRollback = false)
 //컨피그를 = false 를 사용하면 실 DB에 commit 된다.
 
+@ContextConfiguration("classpath:/applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class) // 테스트 코드들을 rollback을 시켜주는 녀석
-@ContextConfiguration("classpath:applicationContext.xml")
 public class BookDaoImplTest
 {
 	@Autowired
@@ -137,7 +137,7 @@ public class BookDaoImplTest
 	{
 		System.out.println("Book setUp시작");
 
-/*		historyDao.deletAll(); // 지울땐 첫번째
+		historyDao.deletAll(); // 지울땐 첫번째
 		bookDao.deletAll(); // 지울때는 가운데
 		userDao.deletAll(); // 지울때는 마지막
 
@@ -145,7 +145,7 @@ public class BookDaoImplTest
 		assertThat(bookDao.countAll(), is(0));
 		assertThat(userDao.countAll(), is(0));
 		
-		userBasicSetting();*/
+		userBasicSetting();
 		System.out.println("Book setUp완료");
 	}
 
