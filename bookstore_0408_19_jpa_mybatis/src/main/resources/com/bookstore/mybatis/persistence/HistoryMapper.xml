@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Book Mapper with Nested Results for Collection -->
+<mapper namespace="com.bookstore.mybatis.persistence.HistoryMapper">
+
+	<resultMap id="historyResultMap" type="History">
+		<id property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="bookId" column="bookId" />
+		<result property="actionType" column="actionType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result property="insertDate" column="insertDate" />
+	</resultMap>
+
+	<select id="findAll" resultMap="historyResultMap">
+		select a.id,
+		a.userId,
+		a.bookId,
+		a.actionType,
+		a.insertDate
+		from bookstore.histories a
+	</select>
+
+	<select id="findById" parameterType="Integer" resultMap="historyResultMap">
+		select
+		a.id,
+		a.userId,
+		a.bookId,
+		a.actionType,
+		a.insertDate
+		from bookstore.histories a
+		where a.id = #{id}
+	</select>
+
+	<insert id="insert" parameterType="History" useGeneratedKeys="true" keyProperty="id">
+		insert into bookstore.histories( userId, bookId, actionType, insertDate )
+		values( #{userId}, #{bookId}, #{actionType}, #{insertDate} )
+	</insert>
+
+	<update id="update" parameterType="History">
+		update
+		bookstore.histories
+		set userId = #{userId},
+		bookId = #{bookId},
+		actionType = #{actionType},
+		insertDate = #{insertDate}
+		where a.id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		delete from bookstore.histories
+		where a.id = #{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<tx:annotation-driven />
+
+	<context:property-placeholder location="spring.properties" />
+	
+	<context:component-scan base-package="com.bookstore.bshibernate.dao" />	
+	<context:component-scan base-package="com.bookstore.bshibernate.services" />
+	<context:component-scan base-package="com.bookstore.bshibernate.utils" />
+
+	<!-- sessionFactory 구성 -->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" p:driverClass="${connect.driver}" p:jdbcUrl="${connect.url}"
+		p:user="${connect.username}" p:password="${connect.password}"
+		p:acquireIncrement="5" p:idleConnectionTestPeriod="60" p:maxPoolSize="10"
+		p:maxStatements="50" p:minPoolSize="5" />
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+		p:dataSource-ref="dataSource" p:configLocation="classpath:hibernate.cfg.xml"
+		p:packagesToScan="com.bookstore.bshibernate.entities" />
+
+	<bean id="transactionManager"
+			class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+			p:sessionFactory-ref="sessionFactory" />
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+</beans>

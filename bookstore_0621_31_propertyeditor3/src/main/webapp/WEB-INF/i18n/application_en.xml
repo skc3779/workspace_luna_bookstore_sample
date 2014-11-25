@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version ="1.0">
+    <entry key="label_books_name" >Name</entry>
+    <entry key="label_books_author" >Author</entry>
+    <entry key="label_books_publishDate" >Publish Date</entry>
+    <entry key="label_books_comment">Comment</entry>
+    <entry key="label_books_status" >Status</entry>
+    <entry key="label_button_editor" >Editor</entry>
+</properties>

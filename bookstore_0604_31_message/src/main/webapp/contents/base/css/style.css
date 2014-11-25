@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+
+/* 60px to make the container go all the way to the bottom of the topbar */
+body { padding-top: 60px; } 
+
+.demo-section
+{
+    margin: 0 auto 20px auto;
+    padding: 10px;
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    border-width: 1px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border-color: rgba(255,255,255,0.2);
+    background: -moz-linear-gradient(top,  rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.07) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.01)),c color-stop(100%,rgba(0,0,0,0.07)));
+    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.01) 0%,rgba(0,0,0,0.07) 100%);
+    background: -o-linear-gradient(top,  rgba(0,0,0,0.01) 0%,rgba(0,0,0,0.07) 100%);
+    background: -ms-linear-gradient(top,  rgba(0,0,0,0.01) 0%,rgba(0,0,0,0.07) 100%);
+    background: linear-gradient(to bottom,  rgba(0,0,0,0.01) 0%,rgba(0,0,0,0.07) 100%);
+}
+
+.demo-section-overlay {
+    margin: 0 -10px -10px -10px;
+    background: #ebebeb;
+    padding: 0 10px;
+}
+
+.demo-section > .title {
+    margin: 5px 0 15px 0;
+    text-align: center;
+}
+
+.console
+{
+    background-color: #fff;
+    border:solid #bbb;
+    border-width:1px 0;
+    color: #333;
+    font: 11px Consolas, Monaco, "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+    height: 200px;
+    margin: 1.4em 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: left;
+}
+
+/*console*/
+
+.console .count,
+.km-root .km-android .console .count
+{
+    background-color: #91AFEF;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 10px;
+    margin-left: 5px;
+    padding: 2px 6px 2px 5px;
+}
+
+.console div
+{
+    background-position: 6px -95px;
+    border-bottom: 1px solid #DDD;
+    padding: 5px 5px 4px 24px;
+}
+
+.console .error
+{
+    background-position: 6px -135px;
+}
+

@@ -1,0 +1,21 @@
+.unstyled input[type="checkbox"] {
+	margin: 0 5px;
+}
+
+.unstyled {
+
+}
+
+button#add {
+	display: block;
+	width: 220px;
+}
+
+.done-true{
+	color: gray;
+	text-decoration: line-through;
+}
+
+input.ng-invalid {
+	border: 3px solid red;
+}

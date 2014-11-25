@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="definition.jsp" template="/WEB-INF/jsp/layouts/layout.jsp">
+		<put-attribute name="header" value="" />
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="" />
+	</definition>
+	
+  <definition name="tile.list.jsp" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="북 리스트(Tile and JSTL)" />
+    <put-attribute name="body" value="/WEB-INF/jsp/books/list.jsp" />
+  </definition> 
+  
+  <definition name="tile.upload.error" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="북 리스트(Tile and JSTL)" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/uploaderror.jsp" />
+  </definition>
+   
+  <definition name="/uploaditem" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/uploaditem.jsp" />
+  </definition> 
+  
+  <definition name="/multiupload" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/multiupload.jsp" />
+  </definition>   
+
+  <definition name="/multiuploadresult" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/multiuploadresult.jsp" />
+  </definition>   
+  
+  
+  <definition name="/kendo/uploadform" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="KENDO 파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/kendo-uploadform.jsp" />
+  </definition>   
+  <definition name="/kendo/uploadresult" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="KENDO 파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/kendo-uploadresult.jsp" />
+  </definition> 
+  <definition name="/kendo/async/uploadform" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="KENDO 파일 업로드" />
+    <put-attribute name="body" value="/WEB-INF/jsp/upload/kendo-async-uploadform.jsp" />
+  </definition>
+  
+  <definition name="/add/html" extends="definition.jsp">
+    <put-attribute name="header" value="/WEB-INF/jsp/layouts/header.jsp" />
+    <put-attribute name="title" value="북스토어 저장하기" />
+    <put-attribute name="body" value="/WEB-INF/jsp/books/add-html.jsp" />
+  </definition>  
+</tiles-definitions>
