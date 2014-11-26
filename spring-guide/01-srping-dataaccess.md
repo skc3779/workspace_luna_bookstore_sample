@@ -21,7 +21,7 @@ JavaEE와 JavaSE를 위한 영속성(persistence) 관리와 O/R 매핑(ORM) 을 
 
 #### JPA 활용에 대한 ApplicationContext XML을 이용한방식
 
-1)jpaApplicationcontext.xml 방식
+1) jpaApplicationcontext.xml 방식 [(소스링크)](https://github.com/skc3779/workspace_luna_bookstore_sample/blob/master/bookstore_0404_17_jpa_querydql/src/test/resources/jpaApplicationContext.xml)
 
 ```xml
 	<context:property-placeholder location="spring.properties" />
@@ -30,19 +30,8 @@ JavaEE와 JavaSE를 위한 영속성(persistence) 관리와 O/R 매핑(ORM) 을 
 		<property name="driverClass" value="${connect.driver}" />
 		<property name="jdbcUrl" value="${connect.url}" />
 		<property name="username" value="${connect.username}" />
-		<property name="password" value="${connect.password}" />
-		<property name="idleConnectionTestPeriodInMinutes" value="60" />
-		<property name="idleMaxAgeInMinutes" value="240" />
-		<property name="maxConnectionsPerPartition" value="5" />
-		<property name="minConnectionsPerPartition" value="5" />
-		<property name="partitionCount" value="3" />
-		<property name="acquireIncrement" value="5" />
-		<property name="statementsCacheSize" value="100" />
-		<property name="releaseHelperThreads" value="3" />
+		....
 	</bean>
-
-	<context:component-scan base-package="com.bookstore.bshibernate.services" />
-	<context:component-scan base-package="com.bookstore.bshibernate.utils" />
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -73,7 +62,7 @@ JavaEE와 JavaSE를 위한 영속성(persistence) 관리와 O/R 매핑(ORM) 을 
 	<context:annotation-config />
 ```
 
-2) JpaApplicationConfiguration 방식
+2) JpaApplicationConfiguration 방식 [(소스링크)](https://github.com/skc3779/workspace_luna_bookstore_sample/blob/master/bookstore_0404_17_jpa_querydql/src/main/java/com/bookstore/bshibernate/config/JpaApplicationConfiguration.java)
 
 ```java
 @Configuration
@@ -117,7 +106,9 @@ public class JpaApplicationConfiguration {
 		jpaPropertyMap.put("hibernate.dialect",
 				"org.hibernate.dialect.MySQL5InnoDBDialect");
 
-		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+		LocalContainerEntityManagerFactoryBean entityManagerFactory = 
+        	new LocalContainerEntityManagerFactoryBean();
+        
 		entityManagerFactory.setDataSource(dataSource());
 		entityManagerFactory
 				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
@@ -128,8 +119,7 @@ public class JpaApplicationConfiguration {
 		return entityManagerFactory;
 	}
 
-	// sessionFactoryFactory().getObject() FactoryFactory 이기 때문에 getObject()
-	// 받아야한다.
+	// sessionFactoryFactory().getObject() FactoryFactory 이기 때문에 getObject()로 받아아 한다.
 	@Bean
 	public JpaTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -161,7 +151,7 @@ public class JpaApplicationConfiguration {
 }
 ```
 
-3) spring.properties 파일
+3) spring.properties 파일 [소스링크](https://github.com/skc3779/workspace_luna_bookstore_sample/blob/master/bookstore_0404_17_jpa_querydql/src/test/resources/spring.properties)
 
 ```txt
 connect.driver=com.mysql.jdbc.Driver
@@ -169,3 +159,55 @@ connect.url=jdbc:mysql://localhost:3306/bookstore
 connect.username=xxx
 connect.password=xxx
 ```
+
+#### Jpa에서 EntityManagerFactory를 이용한 EntityManager를 직접생성 후 활용
+
+컨테이너가 관리하지 않는 EntityManager이므로 트랜잭션을 직접 시작하고 종료해야 한다.
+
+```java
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+	
+	@Test
+	public void testBookCount_entityManagerFactory() {
+		EntityManager em = entityManagerFactory.createEntityManager();
+
+		// transaction을 별도처리 해야함.
+		em.getTransaction().begin();		
+		for(Book book : getBooks()) {
+			em.persist(book);	
+		}		
+		em.getTransaction().commit();
+        
+		Long count = em.createQuery("select count(b) from Book b", Long.class).getSingleResult();		
+		System.out.println(String.format("book count : %s", count));
+		
+	}
+```
+
+#### Jpa에서 @PersistenceContext를 애노테이션을 이용한 EntityManager 활용
+
+EntityManager는 스프링 빈으로 등록되지 않는다. 빈으로 등록한 것은 EntityManagerFactory 타입의 빈을 생선하는 LocalContainerManagerFactoryBean이지 EntityManager 타입의 빈은 존재하지 않는다. 따라서 @Autowired와 같은 스프링의 DI방법으로는 EntityManager를 주입받을 수 없다. 하지만 스프링에서는 JPA의 스펙에 나오는 JavaEE 컨테이너가 관리하는 EntityManger를 주입받는 방법을 스프링 애플리케이션의 코드에도 동일하게 사용할 수 있다.
+이는 아래와 같이 `DAO가 컨테이너로부터 EntityManager를 직접 주입받으려면 JPA의 @persisenceContext 애노테이션을 사용하면 된다.`
+
+```java
+	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
+	private EntityManager entityManager;
+    
+	@Test
+	public void testBookCount_entityManager() {
+		for(Book book : getBooks()) {
+			entityManager.persist(book);	
+		}
+		
+		Long count = entityManager.createQuery("select count(b) from Book b", Long.class).getSingleResult();
+		
+		System.out.println(String.format("book count : %s", count));
+	}
+
+```
+
+
+
+
+
