@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -80,6 +81,19 @@ public class HiberateApplicationConfiguration {
 		transactionManager.setSessionFactory(sessionFactoryFactory().getObject());
 		return transactionManager;
 	}
+
+	/**
+	 * JPA Repository에 @Repository 를 붙이고, 아래의 빈을 등록하면 JPA Repository (DAO)에서 발생하는
+	 * 예외가 스프링 DataAccessException으로 전환돼어 서비스 계층으로 던져진다.
+	 *  
+	 * @Repository 애노테이션이 붙은 빈을 찾아서 예외 변환 기능을 가진 AOP 어드바이스를
+	 * 적용해주는 후처리 기능을 제공 
+	 * @return exception
+	 */
+//	@Bean
+//	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+//		return new PersistenceExceptionTranslationPostProcessor();
+//	}
 	
 	// xml 를 클래스로 하용하기 위해서는 꼭 존재 해야한다.
 	@Bean

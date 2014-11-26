@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -31,25 +32,26 @@ import com.jolbox.bonecp.BoneCPDataSource;
  * 
  * 
  * 	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
-		return new PropertySourcesPlaceholderConfigurer();
-	}
+ public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+ return new PropertySourcesPlaceholderConfigurer();
+ }
 
-	프로퍼티 파일을 읽어오기 위해서 필요
+ 프로퍼티 파일을 읽어오기 위해서 필요
  * 
  */
 @Configuration
-@ComponentScan({"com.bookstore.bshibernate.services","com.bookstore.bshibernate.utils"})
-@EnableJpaRepositories(basePackages={"com.bookstore.bshibernate.repository"}, entityManagerFactoryRef="entityManagerFactory")
+@ComponentScan({ "com.bookstore.bshibernate.services",
+		"com.bookstore.bshibernate.utils" })
+@EnableJpaRepositories(basePackages = { "com.bookstore.bshibernate.repository" }, entityManagerFactoryRef = "entityManagerFactory")
 @EnableTransactionManagement
 @PropertySource("spring.properties")
 public class JpaApplicationConfiguration {
-	
+
 	@Autowired
 	private Environment env;
-	
-	@Bean(destroyMethod="close")
-	public DataSource dataSource(){
+
+	@Bean(destroyMethod = "close")
+	public DataSource dataSource() {
 		BoneCPDataSource dataSource = new BoneCPDataSource();
 		dataSource.setUsername(env.getProperty("connect.username"));
 		dataSource.setPassword(env.getProperty("connect.password"));
@@ -64,37 +66,55 @@ public class JpaApplicationConfiguration {
 		dataSource.setReleaseHelperThreads(3);
 		return dataSource;
 	}
-	
+
 	/*
-	 * xml 파일을 가져 오기 의해 new ClassPathResource 를 사용 
+	 * xml 파일을 가져 오기 의해 new ClassPathResource 를 사용
 	 */
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
-		
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+
 		Map<String, String> jpaPropertyMap = new HashMap<String, String>();
-		jpaPropertyMap.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-		
+		jpaPropertyMap.put("hibernate.dialect",
+				"org.hibernate.dialect.MySQL5InnoDBDialect");
+
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactory.setDataSource(dataSource());		
-		entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		entityManagerFactory.setPackagesToScan("com.bookstore.bshibernate.entities");
+		entityManagerFactory.setDataSource(dataSource());
+		entityManagerFactory
+				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		entityManagerFactory
+				.setPackagesToScan("com.bookstore.bshibernate.entities");
 		entityManagerFactory.setJpaPropertyMap(jpaPropertyMap);
 		entityManagerFactory.setPersistenceUnitName("defaultEntity");
 		return entityManagerFactory;
 	}
-	
-	// sessionFactoryFactory().getObject() FactoryFactory 이기 때문에 getObject() 받아야한다.
+
+	// sessionFactoryFactory().getObject() FactoryFactory 이기 때문에 getObject()
+	// 받아야한다.
 	@Bean
-	public JpaTransactionManager transactionManager(){
+	public JpaTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setDataSource(dataSource());
-		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+		transactionManager.setEntityManagerFactory(entityManagerFactory()
+				.getObject());
 		return transactionManager;
 	}
-	
+
+	/**
+	 * JPA Repository에 @Repository 를 붙이고, 아래의 빈을 등록하면 JPA Repository (DAO)에서 발생하는
+	 * 예외가 스프링 DataAccessException으로 전환돼어 서비스 계층으로 던져진다.
+	 *  
+	 * @Repository 애노테이션이 붙은 빈을 찾아서 예외 변환 기능을 가진 AOP 어드바이스를
+	 * 적용해주는 후처리 기능을 제공 
+	 * @return exception
+	 */
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
 	// xml 를 클래스로 하용하기 위해서는 꼭 존재 해야한다.
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 

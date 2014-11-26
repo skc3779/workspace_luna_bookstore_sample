@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ import com.bookstore.bshibernate.repository.UserRepository;
 
 @ContextConfiguration(classes = JpaApplicationConfiguration.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+//@Transactional
 public class BookRepositoryWithClassConfigTest {
 
 	@Autowired BookRepository bookRepository;
@@ -138,9 +139,15 @@ public class BookRepositoryWithClassConfigTest {
 
 	@Test
 	public void testSave() {		
-
+		
+		bookRepository.deleteAll();
+		
+		for(Book b : getBooks()) {
+			bookRepository.save(b);
+		}
+		
 		Book book1 = new Book();
-		book1.setId(4);
+		book1.setId(1);
 		book1.setName("Book04");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
@@ -150,6 +157,7 @@ public class BookRepositoryWithClassConfigTest {
 		User u = userRepository.findByName("User02").get(0);
 		book1.setRentUser(u);
 		bookRepository.save(book1);
+
 		
 		assertThat(bookRepository.count() , is(Long.valueOf(4)));
 		

@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.bshibernate.config.HiberateApplicationConfiguration;
@@ -24,6 +25,7 @@ import com.bookstore.bshibernate.entities.BookStatus;
 @ContextConfiguration(classes = HiberateApplicationConfiguration.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@TransactionConfiguration(defaultRollback = false)
 public class BookDaoImplTest {
 
 	@Autowired BookDao bookDao;
@@ -43,7 +45,7 @@ public class BookDaoImplTest {
 	
 	public List<Book> getBooks(){
 		Book book1 = new Book();
-//		book1.setId(1);
+		//book1.setId(16);
 		book1.setName("book name01");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
@@ -74,7 +76,7 @@ public class BookDaoImplTest {
 	}
 	
 	@Test
-	public void testDeletAllAndSave() {	
+	public void testDeletAllAndSave() throws Exception {	
 		bookDao.deleteAll();		
 		assertThat(bookDao.count(), is(0L));
 		

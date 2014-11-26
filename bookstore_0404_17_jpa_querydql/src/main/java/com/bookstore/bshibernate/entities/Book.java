@@ -41,7 +41,7 @@ public class Book {
 	private  Set<History> histories = new HashSet<History>();	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")	
 	public int getId() {
 		return id;
