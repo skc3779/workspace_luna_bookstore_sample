@@ -27,7 +27,7 @@ import com.bookstore.bshibernate.repository.BookRepository;
 import com.bookstore.bshibernate.repository.HistoryRepository;
 import com.bookstore.bshibernate.repository.UserRepository;
 
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:/jpaApplicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class BookRepositoryTest {
@@ -38,6 +38,10 @@ public class BookRepositoryTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		bookRepository.deleteAll();
+		for(Book b : getBooks()) {
+			bookRepository.save(b);
+		}			
 	}
 
 	@After
@@ -76,7 +80,7 @@ public class BookRepositoryTest {
 	
 	public List<Book> getBooks(){
 		Book book1 = new Book();
-		book1.setName("Book04");
+		book1.setName("Book01");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
 		book1.setPublishDate(new Date());
@@ -84,7 +88,7 @@ public class BookRepositoryTest {
 		book1.setRentUser(userRepository.findByName("User02").get(0));
 
 		Book book2 = new Book();
-		book2.setName("Book05");
+		book2.setName("Book02");
 		book2.setAuthor("autor name 02");
 		book2.setComment("comment02");
 		book2.setPublishDate(new Date());
@@ -92,7 +96,7 @@ public class BookRepositoryTest {
 		book2.setRentUser(userRepository.findByName("User02").get(0));
 
 		Book book3 = new Book();
-		book3.setName("Book06");
+		book3.setName("Book03");
 		book3.setAuthor("autor name 03");
 		book3.setComment("comment03");
 		book3.setPublishDate(new Date());
@@ -131,23 +135,24 @@ public class BookRepositoryTest {
 	
 	@Test
 	public void testfindOne() {
-		assertThat(bookRepository.findOne(1).getName(), is("Book01"));
+		assertThat(bookRepository.findByName("Book01").get(0).getName(), is("Book01"));
 	}	
 
 	@Test
 	public void testSave() {		
-
+		
 		Book book1 = new Book();
-		book1.setId(4);
+		//book1.setId(1);
 		book1.setName("Book04");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
 		book1.setPublishDate(new Date());
 		book1.setBookStatus(BookStatus.CANRENT);
+		
 		User u = userRepository.findByName("User02").get(0);
 		book1.setRentUser(u);
 		bookRepository.save(book1);
-		
+
 		assertThat(bookRepository.count() , is(Long.valueOf(4)));
 		
 	}

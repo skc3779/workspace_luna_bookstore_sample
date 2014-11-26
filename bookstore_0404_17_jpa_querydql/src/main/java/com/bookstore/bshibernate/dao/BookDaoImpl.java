@@ -30,12 +30,10 @@ public class BookDaoImpl implements BookDao {
 	public void deleteAll() {
 		HibernateQuery query = new HibernateQuery();
 		QBook qBook = QBook.book;
-		// delete all Book;
 		new HibernateDeleteClause(sessionFactory.getCurrentSession(), qBook).execute();
 	}
 
 	public int save(Book book) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		session.save(book);		
 		return (int)book.getId();

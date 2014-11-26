@@ -22,11 +22,11 @@ import com.bookstore.bshibernate.dao.BookDao;
 import com.bookstore.bshibernate.entities.Book;
 import com.bookstore.bshibernate.entities.BookStatus;
 
-@ContextConfiguration("classpath:/hibApplicationContext.xml")
+@ContextConfiguration(classes = HiberateApplicationConfiguration.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 //@TransactionConfiguration(defaultRollback = false)
-public class BookDaoImplTest {
+public class BookDaoImplWithClassConfigTest {
 
 	@Autowired BookDao bookDao;
 

@@ -31,18 +31,21 @@ import com.jolbox.bonecp.BoneCPDataSource;
  * Environment env.getProperty("connect.username") 을 통해서 properties 파일에서 값들을 읽어온다 .
  * 
  * 
- * 	@Bean
- public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
- return new PropertySourcesPlaceholderConfigurer();
- }
-
- 프로퍼티 파일을 읽어오기 위해서 필요
+ * @Bean
+ * public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+ *   return new PropertySourcesPlaceholderConfigurer();
+ * }
+ *
+ * 프로퍼티 파일을 읽어오기 위해서 필요
  * 
  */
 @Configuration
-@ComponentScan({ "com.bookstore.bshibernate.services",
+@ComponentScan(value = { 
+		"com.bookstore.bshibernate.services",
 		"com.bookstore.bshibernate.utils" })
-@EnableJpaRepositories(basePackages = { "com.bookstore.bshibernate.repository" }, entityManagerFactoryRef = "entityManagerFactory")
+@EnableJpaRepositories(basePackages = { 
+		"com.bookstore.bshibernate.repository" }, 
+		entityManagerFactoryRef = "entityManagerFactory")
 @EnableTransactionManagement
 @PropertySource("spring.properties")
 public class JpaApplicationConfiguration {

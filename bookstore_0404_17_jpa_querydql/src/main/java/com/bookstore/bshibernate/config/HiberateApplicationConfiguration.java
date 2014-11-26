@@ -90,10 +90,10 @@ public class HiberateApplicationConfiguration {
 	 * 적용해주는 후처리 기능을 제공 
 	 * @return exception
 	 */
-//	@Bean
-//	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-//		return new PersistenceExceptionTranslationPostProcessor();
-//	}
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
 	
 	// xml 를 클래스로 하용하기 위해서는 꼭 존재 해야한다.
 	@Bean

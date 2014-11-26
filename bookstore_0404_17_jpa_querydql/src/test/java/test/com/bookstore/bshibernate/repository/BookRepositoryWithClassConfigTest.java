@@ -32,7 +32,7 @@ import com.bookstore.bshibernate.repository.UserRepository;
 
 @ContextConfiguration(classes = JpaApplicationConfiguration.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Transactional
+@Transactional
 public class BookRepositoryWithClassConfigTest {
 
 	@Autowired BookRepository bookRepository;
@@ -41,11 +41,12 @@ public class BookRepositoryWithClassConfigTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		bookRepository.deleteAll();
+		for(Book b : getBooks()) {
+			bookRepository.save(b);
+		}		
 	}
 
-	@After
-	public void tearDown() throws Exception {	 
-	}
 	
 	public List<User> getUsers()
 	{
@@ -79,7 +80,7 @@ public class BookRepositoryWithClassConfigTest {
 	
 	public List<Book> getBooks(){
 		Book book1 = new Book();
-		book1.setName("Book04");
+		book1.setName("Book01");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
 		book1.setPublishDate(new Date());
@@ -87,7 +88,7 @@ public class BookRepositoryWithClassConfigTest {
 		book1.setRentUser(userRepository.findByName("User02").get(0));
 
 		Book book2 = new Book();
-		book2.setName("Book05");
+		book2.setName("Book02");
 		book2.setAuthor("autor name 02");
 		book2.setComment("comment02");
 		book2.setPublishDate(new Date());
@@ -95,7 +96,7 @@ public class BookRepositoryWithClassConfigTest {
 		book2.setRentUser(userRepository.findByName("User02").get(0));
 
 		Book book3 = new Book();
-		book3.setName("Book06");
+		book3.setName("Book03");
 		book3.setAuthor("autor name 03");
 		book3.setComment("comment03");
 		book3.setPublishDate(new Date());
@@ -134,20 +135,14 @@ public class BookRepositoryWithClassConfigTest {
 	
 	@Test
 	public void testfindOne() {
-		assertThat(bookRepository.findOne(1).getName(), is("Book01"));
+		assertThat(bookRepository.findByName("Book01").get(0).getName(), is("Book01"));
 	}	
 
 	@Test
 	public void testSave() {		
 		
-		bookRepository.deleteAll();
-		
-		for(Book b : getBooks()) {
-			bookRepository.save(b);
-		}
-		
 		Book book1 = new Book();
-		book1.setId(1);
+		//book1.setId(1);
 		book1.setName("Book04");
 		book1.setAuthor("autor name 01");
 		book1.setComment("comment01");
@@ -158,7 +153,6 @@ public class BookRepositoryWithClassConfigTest {
 		book1.setRentUser(u);
 		bookRepository.save(book1);
 
-		
 		assertThat(bookRepository.count() , is(Long.valueOf(4)));
 		
 	}

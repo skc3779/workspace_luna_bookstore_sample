@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.bshibernate.services.BookDslService;
 
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:jpaApplicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
