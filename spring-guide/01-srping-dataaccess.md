@@ -185,9 +185,10 @@ connect.password=xxx
 	}
 ```
 
-#### Jpa에서 @PersistenceContext를 애노테이션을 이용한 EntityManager 활용
+#### Jpa에서 @PersistenceContext를 애노테이션을 이용한 EntityManager 활용 [소스링크](https://github.com/skc3779/workspace_luna_bookstore_sample/blob/master/bookstore_0404_17_jpa_querydql/src/test/java/test/com/bookstore/bshibernate/access/BookDataAccessTest.java)
 
 EntityManager는 스프링 빈으로 등록되지 않는다. 빈으로 등록한 것은 EntityManagerFactory 타입의 빈을 생선하는 LocalContainerManagerFactoryBean이지 EntityManager 타입의 빈은 존재하지 않는다. 따라서 @Autowired와 같은 스프링의 DI방법으로는 EntityManager를 주입받을 수 없다. 하지만 스프링에서는 JPA의 스펙에 나오는 JavaEE 컨테이너가 관리하는 EntityManger를 주입받는 방법을 스프링 애플리케이션의 코드에도 동일하게 사용할 수 있다.
+
 이는 아래와 같이 `DAO가 컨테이너로부터 EntityManager를 직접 주입받으려면 JPA의 @persisenceContext 애노테이션을 사용하면 된다.`
 
 ```java
