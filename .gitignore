@@ -3,3 +3,9 @@
 /.metadata
 /RemoteSystemsTempFiles
 */target
+.classpath
+.settings
+.project
+.recommenders
+target
+/bookstore_0520_27_jsp_webxml/
